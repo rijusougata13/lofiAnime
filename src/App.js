@@ -1,23 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState,useEffect, useRef } from "react";
+import './App.scss';
+import Player from "./components/Player/Player";
+import data from "./playlist";
+import Loffy1 from "./assets/gif/loffy1.gif";
+import Loffy2 from "./assets/gif/loffy2.gif";
+import Loffy3 from "./assets/gif/loffy3.gif";
+import Loffy4 from "./assets/gif/loffy4.gif";
+import Loffy5 from "./assets/gif/loffy5.gif";
+import Loffy6 from "./assets/gif/loffy6.gif";
+import Loffy7 from "./assets/gif/loffy7.gif";
+import Loffy8 from "./assets/gif/loffy8.gif";
+import Loffy9 from "./assets/gif/loffy9.gif";
+import Loffy0 from "./assets/gif/loffy0.gif";
+
+// https://github.com/choubari/React-LoFi-Music-App/blob/master/src/App.js
 
 function App() {
+  const [songs, setSongs] = useState(data());
+  const [currentSong, setCurrentSong] = useState(songs[0]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [number, setNumber] = useState(0);
+  const ImgList=[Loffy0,Loffy1,Loffy2,Loffy3,Loffy4,Loffy5,Loffy6,Loffy7,Loffy8,Loffy9];
+
+  const generateRandomNumber = () => {
+    const randomNumber = Math.floor(Math.random() * 10);
+    setNumber(randomNumber);
+  };
+
+  useEffect(() => {
+    generateRandomNumber();
+  },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App"  style={{ 
+      backgroundImage: `url(${ImgList[number]})`,
+    }}>
+      <div className="wrapper"> </div>
+      <Player
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        currentSong={currentSong}
+        generateRandomNumber={generateRandomNumber}
+        setCurrentSong={setCurrentSong}
+      />
     </div>
   );
 }

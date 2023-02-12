@@ -1,0 +1,11 @@
+export {Loffy0 as Loffy0} from "./Loffy0.gif";
+export {Loffy1 as Loffy1} from "./Loffy1.gif";
+export {Loffy2 as Loffy2} from "./Loffy2.gif";
+export {Loffy3 as Loffy3} from "./Loffy3.gif";
+export {Loffy4 as Loffy4} from "./Loffy4.gif";
+export {Loffy5 as Loffy5} from "./Loffy5.gif";
+export {Loffy6 as Loffy6} from "./Loffy6.gif";
+export {Loffy7 as Loffy7} from "./Loffy7.gif";
+export {Loffy8 as Loffy8} from "./Loffy8.gif";
+export {Loffy9 as Loffy9} from "./Loffy9.gif";
+export {Loffy10 as Loffy10} from "./Loffy10.gif";

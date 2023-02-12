@@ -1,0 +1,117 @@
+.player {
+    position: absolute;
+    bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    z-index: 3;
+  }
+  
+  .time-control {
+    color:rgb(145, 255, 0);
+    width: 30%;
+    display: flex;
+    font-size: 20px;
+    padding: 1rem 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    input {
+      width: 100%;
+      -webkit-appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+    p {
+      padding: 0rem 1rem;
+      margin: .5rem 1rem;
+    }
+
+    .volume-controlbar{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+  }
+
+  .song-info{
+    color: white    ;
+    display: flex;
+    padding: 2rem 2.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    span{
+        font-size: 2rem;
+        font-weight: 600;
+    }
+   
+  }
+  
+  .play-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 20px;
+    width: 20%;
+    padding: 1rem;
+
+    .volume-controlbar{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    svg {
+      cursor: pointer;
+    }
+  }
+  
+  input[type="range"]:focus {
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+  }
+  input[type="range"]::-moz-slider-thumb {
+    -webkit-appearance: none;
+    background: transparent;
+    width: 16px;
+  }
+  
+  .track {
+    width: 100%;
+    height: 1rem;
+    position: relative;
+    margin-top: 1.1rem;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  
+  .animate-track {
+    background: rgb(204, 204, 204);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  
+    top: 0;
+    left: 0;
+    transform: translateX(0%);
+    pointer-events: none;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .time-control {
+      width: 90%;
+    }
+    .play-control {
+      width: 60%;
+    }
+  }
+  
+
