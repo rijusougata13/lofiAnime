@@ -12,9 +12,10 @@ import Loffy7 from "./assets/gif/loffy7.gif";
 import Loffy8 from "./assets/gif/loffy8.gif";
 import Loffy9 from "./assets/gif/loffy9.gif";
 import Loffy0 from "./assets/gif/loffy0.gif";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaGithub } from "react-icons/fa";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+
+import './firebase';
 
 // https://github.com/choubari/React-LoFi-Music-App/blob/master/src/App.js
 
