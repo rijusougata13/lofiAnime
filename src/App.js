@@ -12,7 +12,7 @@ import Loffy7 from "./assets/gif/loffy7.gif";
 import Loffy8 from "./assets/gif/loffy8.gif";
 import Loffy9 from "./assets/gif/loffy9.gif";
 import Loffy0 from "./assets/gif/loffy0.gif";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaStar } from "react-icons/fa";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 import './firebase';
@@ -46,6 +46,13 @@ function App() {
           color="#fff"
           icon={faStar} 
         />
+      <FaStar
+        onClick={()=>window.open("https://www.buymeacoffee.com/rijusougata13")}
+        style={{position:"absolute", top:"70px", right:"20px"}}
+        size={30}
+        color="#fff"
+        icon={faStar} 
+      />
     <Player
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
