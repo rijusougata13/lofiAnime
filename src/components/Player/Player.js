@@ -26,7 +26,7 @@ const Player = ({
   generateRandomNumber
 }) => {
 
-  const [volume,setVolume]=useState(0.01);
+  const [volume,setVolume]=useState(0.1);
   const [songs, setSongs] = useState(data());
   const [canChange,setCanChange]=useState(true);
 
@@ -53,9 +53,7 @@ const Player = ({
     animationPercentage: 0,
   });
   const songEndHandler = async () => {
-    let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
-    await setCurrentSong(songs[(currentIndex + 1) % songs.length]);
-    if (isPlaying) audioRef.current.play();
+    changeTrackHandlerRandom();
   };
 
 

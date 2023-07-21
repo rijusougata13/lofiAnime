@@ -12,6 +12,9 @@ import Loffy7 from "./assets/gif/loffy7.gif";
 import Loffy8 from "./assets/gif/loffy8.gif";
 import Loffy9 from "./assets/gif/loffy9.gif";
 import Loffy0 from "./assets/gif/loffy0.gif";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaGithub } from "react-icons/fa";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 // https://github.com/choubari/React-LoFi-Music-App/blob/master/src/App.js
 
@@ -34,14 +37,24 @@ function App() {
     <div className="App"  style={{ 
       backgroundImage: `url(${ImgList[number]})`,
     }}>
-      <div className="wrapper"> </div>
-      <Player
+      <div className="wrapper"> 
+      <FaGithub
+          onClick={()=>window.open("https://github.com/rijusougata13/loffyAnime")}
+          style={{position:"absolute", top:"20px", right:"20px"}}
+          size={30}
+          color="#fff"
+          icon={faStar} 
+        />
+    <Player
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         currentSong={currentSong}
         generateRandomNumber={generateRandomNumber}
         setCurrentSong={setCurrentSong}
       />
+       </div>
+      
+    
     </div>
   );
 }
