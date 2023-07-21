@@ -126,8 +126,13 @@ function chillHop() {
       artist: "Aviino",
       audio: "https://docs.google.com/uc?authuser=0&id=1BfSgLip2doR65yuX-7LG55REjcWLQpzQ&export=download",
       id: uuidv4(),
+    },
+    {
+      name: "The one piece: Opening",
+      artist: "Shoko Fujibayashi",
+      audio: "https://ia802802.us.archive.org/10/items/OnePieceOpening/OP%2001%20-%20We%20Are%21.mp3",
+      id: uuidv4(),
     }
-    //ADD MORE HERE
   ];
 }
 
