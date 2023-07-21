@@ -126,6 +126,65 @@ function chillHop() {
       artist: "Aviino",
       audio: "https://docs.google.com/uc?authuser=0&id=1BfSgLip2doR65yuX-7LG55REjcWLQpzQ&export=download",
       id: uuidv4(),
+    },
+    {
+      name: "Steins;Gate: Gate of Steiner",
+      artist: "Eri Sasaki",
+      audio: "https://drive.google.com/uc?export=download&id=1rCRe9cI18aT5_DZGfTP4BePGidQzA5OD",
+      id: uuidv4(),
+    },
+    {
+      name: "Dragon Ball: Makafushigi Adventure",
+      artist: "Hiroki Takahashi",
+      audio: "https://drive.google.com/uc?export=download&id=1qo2V6bzW_6dBAEEp3HrUk6vSZrN95Cro",
+      id: uuidv4(),
+    },
+    {
+      name: "Dragon Ball Super: Ultimate Battle",
+      artist: "Akira Kushida",
+      audio: "https://drive.google.com/uc?export=download&id=1r2qHMouJr3CrQaSWkjSyC4powCIwbOgF",
+      id: uuidv4(),
+    },
+    {
+      name: "Naruto: ROCKS",
+      artist: "Hound Dog",
+      audio: "https://drive.google.com/uc?export=download&id=1qnIeIidmyDUK-izy_vZXODBL1GyST8ce",
+      id: uuidv4(),
+    },
+    {
+      name: "Naruto: Senya",
+      artist: "Yasuharu Takanashi",
+      audio: "https://drive.google.com/uc?export=download&id=1r6ViZH-irQ5qmAjefb1JZFxhV9xl7H6t",
+      id: uuidv4(),
+    },
+    {
+      name: "Shingeki no Kyojin: My War",
+      artist: "Shinsei Kamattechan",
+      audio: "https://drive.google.com/uc?export=download&id=1r2HInMn8AQqWUyxOQ-ttneJYSKZhAO63",
+      id: uuidv4(),
+    },
+    {
+      name: "Shingeki no Kyojin: Fight Theme",
+      artist: "Hiroyuki Sawano",
+      audio: "https://drive.google.com/uc?export=download&id=1qxpd4zffMJ2SL4ZWXubFnOSdb-3doTQr",
+      id: uuidv4(),
+    },
+    {
+      name: "Shingeki no Kyoin: You see big girl",
+      artist: "Gemie",
+      audio: "https://drive.google.com/uc?export=download&id=1r1NCKegN7M9ijp7mflWnmlPgs3y082Gz",
+      id: uuidv4(),
+    },
+    {
+      name: "Hunter x Hunter: Restriction and Pledge",
+      artist: "Geek Music",
+      audio: "https://drive.google.com/uc?export=download&id=1qoDQLsmwgfHWKDcJuGYv885iZC_O6Syf",
+      id: uuidv4(),
+    },
+    {
+      name: "Cowboy Bebop: Tank",
+      artist: "Yoko Kanno",
+      audio: "https://drive.google.com/uc?export=download&id=1r4X900fvcpiOy7eupaKfy19qSVM2rRrW"
     }
     //ADD MORE HERE
   ];
