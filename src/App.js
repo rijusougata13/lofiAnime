@@ -17,13 +17,13 @@ import Loffy0 from "./assets/gif/loffy0.gif";
 
 function App() {
   const [songs, setSongs] = useState(data());
-  const [currentSong, setCurrentSong] = useState(songs[0]);
+  const [currentSong, setCurrentSong] = useState(songs[Math.floor(Math.random() * songs.length)]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [number, setNumber] = useState(0);
   const ImgList=[Loffy0,Loffy1,Loffy2,Loffy3,Loffy4,Loffy5,Loffy6,Loffy7,Loffy8,Loffy9];
 
   const generateRandomNumber = () => {
-    const randomNumber = Math.floor(Math.random() * 10);
+    const randomNumber = Math.floor(Math.random() * ImgList.length);
     setNumber(randomNumber);
   };
 

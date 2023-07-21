@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Typewriter from 'typewriter-effect';
 import data from "../../playlist";
+import Equilizer  from "../../assets/gif/equilizer.gif";
 
 import './index.scss';
 
@@ -25,9 +26,10 @@ const Player = ({
   generateRandomNumber
 }) => {
 
-  const [volume,setVolume]=useState(0.5);
+  const [volume,setVolume]=useState(0.01);
   const [songs, setSongs] = useState(data());
- 
+  const [canChange,setCanChange]=useState(true);
+
   const audioRef = useRef(null);
   const [libraryStatus, setLibraryStatus] = useState(false);
   const timeUpdateHandler = (e) => {
@@ -57,6 +59,17 @@ const Player = ({
   };
 
 
+  const changeVolumeWithKeyboard = (event) => {
+    if (event.keyCode === 38) {
+      // Up arrow key
+      event.preventDefault();
+      setVolume((prevVolume) => Math.min(prevVolume + 0.05, 1));
+    } else if (event.keyCode === 40) {
+      // Down arrow key
+      event.preventDefault();
+      setVolume((prevVolume) => Math.max(prevVolume - 0.05, 0));
+    }
+  };
 
   const activeLibraryHandler = (nextPrev) => {
     const newSongs = songs.map((newSong) => {
@@ -96,6 +109,25 @@ const Player = ({
     setSongInfo({ ...songInfo, currentTime: e.target.value });
   };
 
+  const changeTrackHandlerRandom = async () => {
+
+    try{
+      generateRandomNumber();
+
+
+      const randomNumber = Math.floor(Math.random() * (songs.length));
+      await setCurrentSong(songs[randomNumber]);
+      activeLibraryHandler(songs[randomNumber]);
+        if(isPlaying)
+       await audioRef.current.play();
+    }
+    catch(err){
+      console.log("Something went wrong",err);
+    }
+    //playAudio(isPlaying, audioRef);
+  };
+
+
   const skipTrackHandler = async (direction) => {
     generateRandomNumber();
 
@@ -121,6 +153,14 @@ const Player = ({
     transform: `translateX(${songInfo.animationPercentage}%)`,
   };
 
+  function shortenString(str, maxLength = 15) {
+    if (str.length <= maxLength) {
+      return str;
+    } else {
+      return str.substring(0, maxLength) + "...";
+    }
+  }
+
   window.onkeydown = function(event){
     if(event.keyCode === 32) {
         event.preventDefault();
@@ -130,12 +170,12 @@ const Player = ({
     }
     if(event.keyCode === 37) {
       event.preventDefault();
-      skipTrackHandler("skip-back");
+      changeTrackHandlerRandom();
       // document.querySelector('a').click(); //This will trigger a click on the first <a> element.
   }
   if(event.keyCode === 39) {
     event.preventDefault();
-    skipTrackHandler("skip-forward")
+    changeTrackHandlerRandom();
     // document.querySelector('a').click(); //This will trigger a click on the first <a> element.
 }
 
@@ -144,7 +184,15 @@ const Player = ({
 useEffect(() => {
 
       document.getElementById("audio").volume = volume;
+       // Add event listeners for up and down arrow keys
+    window.addEventListener("keydown", changeVolumeWithKeyboard);
+
+    // Clean up the event listeners when component unmounts
+    return () => {
+      window.removeEventListener("keydown", changeVolumeWithKeyboard);
+    };
 }, [volume]);
+
 
 
   return (
@@ -154,7 +202,7 @@ useEffect(() => {
         { isPlaying?
             <Typewriter
               options={{
-                strings:[currentSong.name+" ....."],
+                strings:[(currentSong.name)+"....."],
                 autoStart: true,
                 loop: true,
                 pauseFor: 10000,
@@ -165,7 +213,7 @@ useEffect(() => {
               options={{
                 strings:["Paused ........"],
                 autoStart: true,
-                stop: true,
+                loop: true,
 
                 pauseFor: 10000,
               }}
@@ -173,31 +221,12 @@ useEffect(() => {
               
           }
       </div>
-      {/* <div className="time-control">
-        <p>{getTime(songInfo.currentTime)}</p>
-        <div
-          style={{
-            background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})`,
-          }}
-          className="track"
-        >
-          <input
-            min={0}
-            max={songInfo.duration || 0}
-            value={songInfo.currentTime}
-            onChange={dragHandler}
-            type="range"
-          />
-          <div style={trackAnim} className="animate-track"></div>
-        </div>
-        
-        <p>{songInfo.duration ? getTime(songInfo.duration) : "0:00"}</p>
-
-        
-      </div> */}
+ 
       <div className="play-control">
+        
+        {isPlaying && <img src={Equilizer} height={50} width={150} padding={0}/>}
         <FontAwesomeIcon
-          onClick={() => skipTrackHandler("skip-back")}
+          onClick={() => changeTrackHandlerRandom()}
           className="skip-back"
           size="1x"
           color="rgb(145, 255, 0)"
@@ -211,7 +240,7 @@ useEffect(() => {
           icon={isPlaying ? faPause : faPlay}
         />
         <FontAwesomeIcon
-          onClick={() => skipTrackHandler("skip-forward")}
+          onClick={() => changeTrackHandlerRandom()}
           className="skip-forward"
           color="rgb(145, 255, 0)"
           size="1x"
