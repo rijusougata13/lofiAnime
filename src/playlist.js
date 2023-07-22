@@ -184,9 +184,14 @@ function chillHop() {
     {
       name: "Cowboy Bebop: Tank",
       artist: "Yoko Kanno",
-      audio: "https://drive.google.com/uc?export=download&id=1r4X900fvcpiOy7eupaKfy19qSVM2rRrW"
+      audio: "https://drive.google.com/uc?export=download&id=1r4X900fvcpiOy7eupaKfy19qSVM2rRrW",
+      id: uuidv4(),
+    },
+      name: "The one piece: Opening",
+      artist: "Shoko Fujibayashi",
+      audio: "https://ia802802.us.archive.org/10/items/OnePieceOpening/OP%2001%20-%20We%20Are%21.mp3",
+      id: uuidv4(),
     }
-    //ADD MORE HERE
   ];
 }
 
