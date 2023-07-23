@@ -52,8 +52,13 @@ const Player = ({
     duration: 0,
     animationPercentage: 0,
   });
-  const songEndHandler = async () => {
-    changeTrackHandlerRandom();
+  const songEndHandler = async (e) => {
+    e.preventDefault();
+    const event = new KeyboardEvent("keydown", {
+      keyCode: 37,
+    });
+    window.dispatchEvent(event);
+   
   };
 
 
@@ -87,6 +92,7 @@ const Player = ({
   };
 
   const playSongHandler = () => {
+    try{
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(!isPlaying);
@@ -94,6 +100,10 @@ const Player = ({
       audioRef.current.play();
       setIsPlaying(!isPlaying);
     }
+  }
+  catch(err){
+    console.log("err",err);
+  }
   };
 
   const getTime = (time) => {
@@ -107,24 +117,36 @@ const Player = ({
     setSongInfo({ ...songInfo, currentTime: e.target.value });
   };
 
-  const changeTrackHandlerRandom = async () => {
-
-    try{
+  const changeTrackHandlerRandom = async (e) => {
+    e.preventDefault();
+  
+    try {
       generateRandomNumber();
-
-
-      const randomNumber = Math.floor(Math.random() * (songs.length));
+  
+      const randomNumber = Math.floor(Math.random() * songs.length);
       await setCurrentSong(songs[randomNumber]);
       activeLibraryHandler(songs[randomNumber]);
-        if(isPlaying)
-       await audioRef.current.play();
-    }
-    catch(err){
-      console.log("Something went wrong",err);
-    }
-    //playAudio(isPlaying, audioRef);
-  };
+  
+      // Pause the audio and reset isPlaying to false before changing the source
+      if(isPlaying){
+        // setIsPlaying(false);
+        await audioRef.current.play();
+       
+      }
+      // audioRef.current.src = currentSong.audio;
+        setIsPlaying(true);
+        await audioRef.current.play();
 
+      } catch (error) {
+        e.preventDefault();
+        const event = new KeyboardEvent("keydown", {
+          keyCode: 37,
+        });
+        window.dispatchEvent(event);
+      console.log("Error changing the track:", error);
+    }
+  };
+  
 
   const skipTrackHandler = async (direction) => {
     generateRandomNumber();
@@ -168,12 +190,12 @@ const Player = ({
     }
     if(event.keyCode === 37) {
       event.preventDefault();
-      changeTrackHandlerRandom();
+      changeTrackHandlerRandom(event);
       // document.querySelector('a').click(); //This will trigger a click on the first <a> element.
   }
   if(event.keyCode === 39) {
     event.preventDefault();
-    changeTrackHandlerRandom();
+    changeTrackHandlerRandom(event);
     // document.querySelector('a').click(); //This will trigger a click on the first <a> element.
 }
 
@@ -224,7 +246,7 @@ useEffect(() => {
         
         {isPlaying && <img src={Equilizer} height={50} width={150} padding={0}/>}
         <FontAwesomeIcon
-          onClick={() => changeTrackHandlerRandom()}
+          onClick={(e) => changeTrackHandlerRandom(e)}
           className="skip-back"
           size="1x"
           color="rgb(145, 255, 0)"
@@ -238,7 +260,7 @@ useEffect(() => {
           icon={isPlaying ? faPause : faPlay}
         />
         <FontAwesomeIcon
-          onClick={() => changeTrackHandlerRandom()}
+          onClick={(e) => changeTrackHandlerRandom(e)}
           className="skip-forward"
           color="rgb(145, 255, 0)"
           size="1x"
@@ -250,7 +272,10 @@ useEffect(() => {
         onLoadedMetadata={timeUpdateHandler}
         ref={audioRef}
         src={currentSong.audio}
-        onEnded={songEndHandler}
+        onEnded={(e)=>{
+            songEndHandler(e)
+       }
+        }
       ></audio>
       
       <div className="volume-controlbar">
