@@ -1,37 +1,29 @@
-import React, { useState ,useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
   faPause,
-  faAngleLeft,
-  faAngleRight,
   faForward,
   faBackward,
-  faVolumeUp,
   faVolumeDown,
 } from "@fortawesome/free-solid-svg-icons";
-import Typewriter from 'typewriter-effect';
+import Typewriter from "typewriter-effect";
 import data from "../../playlist";
-import Equilizer  from "../../assets/gif/equilizer.gif";
+import Equilizer from "../../assets/gif/equilizer.gif";
 
-import './index.scss';
-
-//import { playAudio } from "../utils";
+import "./index.scss";
 
 const Player = ({
   currentSong,
   setCurrentSong,
   setIsPlaying,
   isPlaying,
-  generateRandomNumber
+  generateRandomNumber,
 }) => {
-
-  const [volume,setVolume]=useState(0.1);
+  const [volume, setVolume] = useState(0.1);
   const [songs, setSongs] = useState(data());
-  const [canChange,setCanChange]=useState(true);
 
   const audioRef = useRef(null);
-  const [libraryStatus, setLibraryStatus] = useState(false);
   const timeUpdateHandler = (e) => {
     const current = e.target.currentTime;
     const duration = e.target.duration;
@@ -58,9 +50,7 @@ const Player = ({
       keyCode: 37,
     });
     window.dispatchEvent(event);
-   
   };
-
 
   const changeVolumeWithKeyboard = (event) => {
     if (event.keyCode === 38) {
@@ -92,159 +82,100 @@ const Player = ({
   };
 
   const playSongHandler = () => {
-    try{
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(!isPlaying);
-    } else {
-      audioRef.current.play();
-      setIsPlaying(!isPlaying);
+    try {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(!isPlaying);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(!isPlaying);
+      }
+    } catch (err) {
+      console.log("err", err);
     }
-  }
-  catch(err){
-    console.log("err",err);
-  }
-  };
-
-  const getTime = (time) => {
-    return (
-      Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2)
-    );
-  };
-
-  const dragHandler = (e) => {
-    audioRef.current.currentTime = e.target.value;
-    setSongInfo({ ...songInfo, currentTime: e.target.value });
   };
 
   const changeTrackHandlerRandom = async (e) => {
     e.preventDefault();
-  
+
     try {
       generateRandomNumber();
-  
+
       const randomNumber = Math.floor(Math.random() * songs.length);
       await setCurrentSong(songs[randomNumber]);
       activeLibraryHandler(songs[randomNumber]);
-  
-      // Pause the audio and reset isPlaying to false before changing the source
-      if(isPlaying){
-        // setIsPlaying(false);
-        await audioRef.current.play();
-       
-      }
-      // audioRef.current.src = currentSong.audio;
-        setIsPlaying(true);
-        await audioRef.current.play();
 
-      } catch (error) {
-        e.preventDefault();
-        const event = new KeyboardEvent("keydown", {
-          keyCode: 37,
-        });
-        window.dispatchEvent(event);
+      // Pause the audio and reset isPlaying to false before changing the source
+      if (isPlaying) {
+        await audioRef.current.play();
+      }
+      setIsPlaying(true);
+      await audioRef.current.play();
+    } catch (error) {
+      e.preventDefault();
+      const event = new KeyboardEvent("keydown", {
+        keyCode: 37,
+      });
+      window.dispatchEvent(event);
       console.log("Error changing the track:", error);
     }
   };
-  
 
-  const skipTrackHandler = async (direction) => {
-    generateRandomNumber();
-
-    let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
-    if (direction === "skip-forward") {
-      await setCurrentSong(songs[(currentIndex + 1) % songs.length]);
-      activeLibraryHandler(songs[(currentIndex + 1) % songs.length]);
+  window.onkeydown = function (event) {
+    if (event.keyCode === 32) {
+      event.preventDefault();
+      playSongHandler();
     }
-    if (direction === "skip-back") {
-      if ((currentIndex - 1) % songs.length === -1) {
-        await setCurrentSong(songs[songs.length - 1]);
-        activeLibraryHandler(songs[songs.length - 1]);
-      } else {
-        await setCurrentSong(songs[(currentIndex - 1) % songs.length]);
-        activeLibraryHandler(songs[(currentIndex - 1) % songs.length]);
-      }
-    }
-    if (isPlaying) audioRef.current.play();
-    //playAudio(isPlaying, audioRef);
-  };
-
-  const trackAnim = {
-    transform: `translateX(${songInfo.animationPercentage}%)`,
-  };
-
-  function shortenString(str, maxLength = 15) {
-    if (str.length <= maxLength) {
-      return str;
-    } else {
-      return str.substring(0, maxLength) + "...";
-    }
-  }
-
-  window.onkeydown = function(event){
-    if(event.keyCode === 32) {
-        event.preventDefault();
-        playSongHandler();
-        
-        // document.querySelector('a').click(); //This will trigger a click on the first <a> element.
-    }
-    if(event.keyCode === 37) {
+    if (event.keyCode === 37) {
       event.preventDefault();
       changeTrackHandlerRandom(event);
-      // document.querySelector('a').click(); //This will trigger a click on the first <a> element.
-  }
-  if(event.keyCode === 39) {
-    event.preventDefault();
-    changeTrackHandlerRandom(event);
-    // document.querySelector('a').click(); //This will trigger a click on the first <a> element.
-}
+    }
+    if (event.keyCode === 39) {
+      event.preventDefault();
+      changeTrackHandlerRandom(event);
+    }
+  };
 
-};
-
-useEffect(() => {
-
-      document.getElementById("audio").volume = volume;
-       // Add event listeners for up and down arrow keys
+  useEffect(() => {
+    document.getElementById("audio").volume = volume;
+    // Add event listeners for up and down arrow keys
     window.addEventListener("keydown", changeVolumeWithKeyboard);
 
     // Clean up the event listeners when component unmounts
     return () => {
       window.removeEventListener("keydown", changeVolumeWithKeyboard);
     };
-}, [volume]);
-
-
+  }, [volume]);
 
   return (
     <div className="player">
-     
       <div className="song-info">
-        { isPlaying?
-            <Typewriter
-              options={{
-                strings:[(currentSong.name)+"....."],
-                autoStart: true,
-                loop: true,
-                pauseFor: 10000,
-              }}
-            />
-            :
-            <Typewriter
-              options={{
-                strings:["Paused ........"],
-                autoStart: true,
-                loop: true,
+        {isPlaying ? (
+          <Typewriter
+            options={{
+              strings: [currentSong.name + "....."],
+              autoStart: true,
+              loop: true,
+              pauseFor: 10000,
+            }}
+          />
+        ) : (
+          <Typewriter
+            options={{
+              strings: ["Paused ........"],
+              autoStart: true,
+              loop: true,
 
-                pauseFor: 10000,
-              }}
-            />
-              
-          }
+              pauseFor: 10000,
+            }}
+          />
+        )}
       </div>
- 
+
       <div className="play-control">
-        
-        {isPlaying && <img src={Equilizer} height={50} width={150} padding={0}/>}
+        {isPlaying && (
+          <img src={Equilizer} height={50} width={150} padding={0} />
+        )}
         <FontAwesomeIcon
           onClick={(e) => changeTrackHandlerRandom(e)}
           className="skip-back"
@@ -267,38 +198,34 @@ useEffect(() => {
           icon={faForward}
         />
         <audio
-        id="audio"
-        onTimeUpdate={timeUpdateHandler}
-        onLoadedMetadata={timeUpdateHandler}
-        ref={audioRef}
-        src={currentSong.audio}
-        onEnded={(e)=>{
-            songEndHandler(e)
-       }
-        }
-      ></audio>
-      
-      <div className="volume-controlbar">
-        <FontAwesomeIcon
-          color="rgb(145, 255, 0)"
-          icon={faVolumeDown}
-          style={{margin: "0 20px 0 30px"}}
-        />
-		  <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.02}
-          value={volume}
-          onChange={event => {
-            setVolume(event.target.valueAsNumber)
+          id="audio"
+          onTimeUpdate={timeUpdateHandler}
+          onLoadedMetadata={timeUpdateHandler}
+          ref={audioRef}
+          src={currentSong.audio}
+          onEnded={(e) => {
+            songEndHandler(e);
           }}
-        />
-       
+        ></audio>
+
+        <div className="volume-controlbar">
+          <FontAwesomeIcon
+            color="rgb(145, 255, 0)"
+            icon={faVolumeDown}
+            style={{ margin: "0 20px 0 30px" }}
+          />
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.02}
+            value={volume}
+            onChange={(event) => {
+              setVolume(event.target.valueAsNumber);
+            }}
+          />
         </div>
-     
       </div>
-    
     </div>
   );
 };
