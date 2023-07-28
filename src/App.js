@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./App.scss";
 import Player from "./components/Player/Player";
-import data from "./playlist";
 import Loffy1 from "./assets/gif/loffy1.gif";
 import Loffy2 from "./assets/gif/loffy2.gif";
 import Loffy3 from "./assets/gif/loffy3.gif";
@@ -14,19 +12,15 @@ import Loffy9 from "./assets/gif/loffy9.gif";
 import Loffy0 from "./assets/gif/loffy0.gif";
 import { FaGithub, FaStar } from "react-icons/fa";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-
+import { MetroSpinner } from "react-spinners-kit";
+import "./App.scss";
 import "./firebase";
 
 // https://github.com/choubari/React-LoFi-Music-App/blob/master/src/App.js
 
 function App() {
-  const [songs] = useState(data());
-  const [currentSong, setCurrentSong] = useState(
-    songs[Math.floor(Math.random() * songs.length)]
-  );
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [number, setNumber] = useState(0);
-  const ImgList = [
+  const [number, setNumber] = useState(Math.floor(Math.random() * 10));
+  const imgList = [
     Loffy0,
     Loffy1,
     Loffy2,
@@ -39,47 +33,51 @@ function App() {
     Loffy9,
   ];
 
-  const generateRandomNumber = () => {
-    const randomNumber = Math.floor(Math.random() * ImgList.length);
-    setNumber(randomNumber);
-  };
 
   useEffect(() => {
-    generateRandomNumber();
-  }, []);
+
+    // Interval that generate a random number between 0 and imgs length after 20 seconds
+    const interval = setInterval(() => {
+      setNumber(Math.floor(Math.random() * imgList.length + 1));
+    }, 20000);
+
+    return () => clearInterval(interval);
+  }, [imgList.length]);
+
   return (
-    <div
-      className="App"
-      style={{
-        backgroundImage: `url(${ImgList[number]})`,
-      }}
-    >
+    <div className="App">
+
+      {/* Image background */}
+      <div className="img-container">
+       {/* If image has not finished loading, show the metrospinner */}
+        {imgList[number] ? (
+          <img src={`${imgList[number]}`} alt="Loffy" />
+        ) : (
+          <div className="loader">
+            <MetroSpinner size={30} color="#fff" />
+          </div>
+        )}
+      </div>
+
+
       <div className="wrapper">
         <FaGithub
           onClick={() =>
             window.open("https://github.com/rijusougata13/loffyAnime")
           }
-          style={{ position: "absolute", top: "20px", right: "20px" }}
-          size={30}
-          color="#fff"
+          className="icon github"
           icon={faStar}
         />
+
         <FaStar
           onClick={() =>
             window.open("https://www.buymeacoffee.com/rijusougata13")
           }
-          style={{ position: "absolute", top: "70px", right: "20px" }}
-          size={30}
-          color="#fff"
+          className="icon star"
           icon={faStar}
         />
-        <Player
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          currentSong={currentSong}
-          generateRandomNumber={generateRandomNumber}
-          setCurrentSong={setCurrentSong}
-        />
+
+        <Player />
       </div>
     </div>
   );
