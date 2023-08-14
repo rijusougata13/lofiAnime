@@ -70,7 +70,7 @@
     opacity: 0;
     z-index: 2;
     pointer-events: none;
-    //animation: flicker .1s infinite;
+    animation: flicker .1s infinite;
   }
   .wrapper::before {
     content: " ";
