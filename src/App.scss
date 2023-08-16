@@ -1,5 +1,4 @@
 .App{
-  // background: url('../src/assets/gif/naruto.gif');
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -14,6 +13,31 @@
   animation: textShadow 1.6s infinite;
   color: white;
 
+  .img-container {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.5s ease;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .loader {
+      width: 100%;
+      height: 100vh;
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
   .wrapper{
     opacity: 0.7;
     width: 100%;
@@ -21,10 +45,21 @@
     z-index: 2;
     background-color: black;
     display: flex;
+
+    .icon {
+      position: absolute;
+      right: 20px;
+      color: #fff;;
+      font-size: 30px;
+      cursor: pointer;
+
+      &.github {top: 20px;}
+      &.star {top: 70px;}
+    }
   }
 
   .wrapper::after {
-    content: " LofiAnime";
+    content: "LofiAnime";
     display: block;
     position: absolute;
     top: 20px;
@@ -35,7 +70,7 @@
     opacity: 0;
     z-index: 2;
     pointer-events: none;
-    animation: flicker 0.15s infinite;
+    animation: flicker .1s infinite;
   }
   .wrapper::before {
     content: " ";

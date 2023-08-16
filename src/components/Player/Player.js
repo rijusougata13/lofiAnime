@@ -1,29 +1,31 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlay,
-  faPause,
-  faForward,
-  faBackward,
-  faVolumeDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faStepBackward, faVolumeDown, faStepForward } from "@fortawesome/free-solid-svg-icons";
 import Typewriter from "typewriter-effect";
 import data from "../../playlist";
 import Equilizer from "../../assets/gif/equilizer.gif";
-
 import "./index.scss";
 
-const Player = ({
-  currentSong,
-  setCurrentSong,
-  setIsPlaying,
-  isPlaying,
-  generateRandomNumber,
-}) => {
-  const [volume, setVolume] = useState(0.1);
+const Player = () => {
+
   const [songs, setSongs] = useState(data());
 
+  const [currentSong, setCurrentSong] = useState(
+    songs[Math.floor(Math.random() * songs.length)]
+  );
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const [volume, setVolume] = useState(0.1);
+
   const audioRef = useRef(null);
+
+  const [songInfo, setSongInfo] = useState({
+    currentTime: 0,
+    duration: 0,
+    animationPercentage: 0,
+  });
+
   const timeUpdateHandler = (e) => {
     const current = e.target.currentTime;
     const duration = e.target.duration;
@@ -39,11 +41,7 @@ const Player = ({
       animationPercentage,
     });
   };
-  const [songInfo, setSongInfo] = useState({
-    currentTime: 0,
-    duration: 0,
-    animationPercentage: 0,
-  });
+
   const songEndHandler = async (e) => {
     e.preventDefault();
     const event = new KeyboardEvent("keydown", {
@@ -99,8 +97,6 @@ const Player = ({
     e.preventDefault();
 
     try {
-      generateRandomNumber();
-
       const randomNumber = Math.floor(Math.random() * songs.length);
       await setCurrentSong(songs[randomNumber]);
       activeLibraryHandler(songs[randomNumber]);
@@ -153,7 +149,7 @@ const Player = ({
         {isPlaying ? (
           <Typewriter
             options={{
-              strings: [currentSong.name + "....."],
+              strings: [currentSong.name],
               autoStart: true,
               loop: true,
               pauseFor: 10000,
@@ -162,7 +158,7 @@ const Player = ({
         ) : (
           <Typewriter
             options={{
-              strings: ["Paused ........"],
+              strings: ["Paused ..."],
               autoStart: true,
               loop: true,
 
@@ -174,14 +170,14 @@ const Player = ({
 
       <div className="play-control">
         {isPlaying && (
-          <img src={Equilizer} height={50} width={150} padding={0} />
+          <img src={Equilizer} height={50} width={150} padding={0} alt="" />
         )}
         <FontAwesomeIcon
           onClick={(e) => changeTrackHandlerRandom(e)}
           className="skip-back"
           size="1x"
           color="rgb(145, 255, 0)"
-          icon={faBackward}
+          icon={faStepBackward}
         />
         <FontAwesomeIcon
           onClick={playSongHandler}
@@ -195,7 +191,7 @@ const Player = ({
           className="skip-forward"
           color="rgb(145, 255, 0)"
           size="1x"
-          icon={faForward}
+          icon={faStepForward}
         />
         <audio
           id="audio"
